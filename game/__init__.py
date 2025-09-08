@@ -6,19 +6,26 @@ from re import escape
 def exists():
     """game.py exists"""
     check50.exists("game.py")
+
+    # The hard-coded number 4 is the answer to the game (specified in test.py).
+    # This is the number that the user is trying to guess.
     check50.include("testing.py")
 
 
 @check50.check(exists)
 def test_string_level():
     """game.py rejects non-numeric level"""
-    check50.run("python3 game.py").stdin("cat", prompt=True).reject()
+    check50.run("python3 game.py").stdin("cat", prompt=True).stdout(
+        regex("Level"), "Level:"
+    ).kill()
 
 
 @check50.check(exists)
 def test_integer_level():
     """game.py rejects out-of-range level"""
-    check50.run("python3 game.py").stdin("0", prompt=True).reject()
+    check50.run("python3 game.py").stdin("0", prompt=True).stdout(
+        regex("Level"), "Level:"
+    ).kill()
 
 
 @check50.check(exists)
@@ -31,18 +38,30 @@ def test_valid_level():
 
 @check50.check(test_valid_level)
 def test_string_guess():
-    """game.py rejects non-numeric guess"""
+    """game.py rejects nonnumeric guess"""
     check50.run("python3 game.py").stdin("1", prompt=True).stdin(
         "cat", prompt=True
     ).reject()
 
 
 @check50.check(test_valid_level)
-def test_integer_guess():
-    """game.py rejects out-of-range guess"""
+def test_out_of_range_large():
+    """game.py rejects guess above specified range with \"Too large!\""""
+    output = "Too large!"
+    check50.run("python3 testing.py").stdin("4", prompt=True).stdin(
+        "8", prompt=True
+    ).stdout(regex(output), output, regex=True).reject()
+    
+
+@check50.check(test_valid_level)
+def test_nonpositive_guess():
+    """game.py rejects nonpositive guess"""
     check50.run("python3 game.py").stdin("1", prompt=True).stdin(
         "0", prompt=True
-    ).reject()
+    ).stdout(reject_regex("Guess"), "Guess:").kill()
+    check50.run("python3 game.py").stdin("50", prompt=True).stdin(
+        "-50", prompt=True
+    ).stdout(reject_regex("Guess"), "Guess:").kill()
 
 
 @check50.check(test_valid_level)
@@ -75,3 +94,8 @@ def test_too_small():
 def regex(text):
     """match case-insensitively with any characters on either side"""
     return rf"(?i)^.*{escape(text)}.*$"
+
+
+def reject_regex(text):
+    """regex to reject if any text was printed before the expected text"""
+    return rf"(?i)(?<!\n){escape(text)}"

@@ -13,9 +13,7 @@ def test_harvard_digits():
     """input of 9/8/1636 outputs 1636-09-08"""
     input = "9/8/1636"
     output = "1636-09-08"
-    check50.run("python3 outdated.py").stdin(input, prompt=True).stdout(
-        regex(output), output, regex=True
-    ).exit()
+    check50.run("python3 outdated.py").stdin(input, prompt=True).stdout(regex(output), output, regex=True).exit()
 
 
 @check50.check(exists)
@@ -23,9 +21,7 @@ def test_harvard_characters():
     """input of September 8, 1636 outputs 1636-09-08"""
     input = "September 8, 1636"
     output = "1636-09-08"
-    check50.run("python3 outdated.py").stdin(input, prompt=True).stdout(
-        regex(output), output, regex=True
-    ).exit()
+    check50.run("python3 outdated.py").stdin(input, prompt=True).stdout(regex(output), output, regex=True).exit()
 
 
 @check50.check(exists)
@@ -33,9 +29,7 @@ def test_yale_digits():
     """input of 10/9/1701 outputs 1701-10-09"""
     input = "10/9/1701"
     output = "1701-10-09"
-    check50.run("python3 outdated.py").stdin(input, prompt=True).stdout(
-        regex(output), output, regex=True
-    ).exit()
+    check50.run("python3 outdated.py").stdin(input, prompt=True).stdout(regex(output), output, regex=True).exit()
 
 
 @check50.check(exists)
@@ -43,9 +37,7 @@ def test_yale_characters():
     """input of October 9, 1701 outputs 1701-10-09"""
     input = "October 9, 1701"
     output = "1701-10-09"
-    check50.run("python3 outdated.py").stdin(input, prompt=True).stdout(
-        regex(output), output, regex=True
-    ).exit()
+    check50.run("python3 outdated.py").stdin(input, prompt=True).stdout(regex(output), output, regex=True).exit()
 
 
 @check50.check(exists)
@@ -53,9 +45,7 @@ def test_extra_spaces():
     """input of \" 9/8/1636 \" outputs 1636-09-08"""
     input = " 9/8/1636 "
     output = "1636-09-08"
-    check50.run("python3 outdated.py").stdin(input, prompt=True).stdout(
-        regex(output), output, regex=True
-    ).exit()
+    check50.run("python3 outdated.py").stdin(input, prompt=True).stdout(regex(output), output, regex=True).exit()
 
 
 @check50.check(exists)
@@ -71,14 +61,14 @@ def test_out_of_order_char():
     input = "10 December, 1815"
     check50.run("python3 outdated.py").stdin(input, prompt=True).reject()
 
-
+    
 @check50.check(exists)
 def test_incorrect_format():
     """input of October/9/1701 results in reprompt"""
     input = "October/9/1701"
     check50.run("python3 outdated.py").stdin(input, prompt=True).reject()
-
-
+    
+    
 @check50.check(exists)
 def test_out_of_range_day():
     """input of 1/50/2000 results in reprompt"""
@@ -102,4 +92,4 @@ def test_no_comma():
 
 def regex(items):
     """match case-sensitively with only whitespace on either side"""
-    return rf"^\s*{escape(items)}\s*$"
+    return fr'^\s*{escape(items)}\s*$'

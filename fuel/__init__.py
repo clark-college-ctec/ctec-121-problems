@@ -13,9 +13,7 @@ def test_3_over_4():
     """input of 3/4 yields output of 75%"""
     input = "3/4"
     output = "75%"
-    check50.run("python3 fuel.py").stdin(input, prompt=True).stdout(
-        regex(output), output, regex=True
-    ).exit()
+    check50.run("python3 fuel.py").stdin(input, prompt=True).stdout(regex(output), output, regex=True).exit()
 
 
 @check50.check(exists)
@@ -23,9 +21,7 @@ def test_round_down():
     """input of 1/3 yields output of 33%"""
     input = "1/3"
     output = "33%"
-    check50.run("python3 fuel.py").stdin(input, prompt=True).stdout(
-        regex(output), output, regex=True
-    ).exit()
+    check50.run("python3 fuel.py").stdin(input, prompt=True).stdout(regex(output), output, regex=True).exit()
 
 
 @check50.check(exists)
@@ -33,9 +29,7 @@ def test_round_up():
     """input of 2/3 yields output of 67%"""
     input = "2/3"
     output = "67%"
-    check50.run("python3 fuel.py").stdin(input, prompt=True).stdout(
-        regex(output), output, regex=True
-    ).exit()
+    check50.run("python3 fuel.py").stdin(input, prompt=True).stdout(regex(output), output, regex=True).exit()
 
 
 @check50.check(exists)
@@ -43,9 +37,7 @@ def test_empty():
     """input of 0/100 yields output of E"""
     input = "0/100"
     output = "E"
-    check50.run("python3 fuel.py").stdin(input, prompt=True).stdout(
-        regex(output), output, regex=True
-    ).exit()
+    check50.run("python3 fuel.py").stdin(input, prompt=True).stdout(regex(output), output, regex=True).exit()
 
 
 @check50.check(exists)
@@ -53,9 +45,7 @@ def test_almost_empty():
     """input of 1/100 yields output of E"""
     input = "1/100"
     output = "E"
-    check50.run("python3 fuel.py").stdin(input, prompt=True).stdout(
-        regex(output), output, regex=True
-    ).exit()
+    check50.run("python3 fuel.py").stdin(input, prompt=True).stdout(regex(output), output, regex=True).exit()
 
 
 @check50.check(exists)
@@ -63,9 +53,7 @@ def test_full():
     """input of 100/100 yields output of F"""
     input = "100/100"
     output = "F"
-    check50.run("python3 fuel.py").stdin(input, prompt=True).stdout(
-        regex(output), output, regex=True
-    ).exit()
+    check50.run("python3 fuel.py").stdin(input, prompt=True).stdout(regex(output), output, regex=True).exit()
 
 
 @check50.check(exists)
@@ -73,9 +61,7 @@ def test_almost_full():
     """input of 99/100 yields output of F"""
     input = "99/100"
     output = "F"
-    check50.run("python3 fuel.py").stdin(input, prompt=True).stdout(
-        regex(output), output, regex=True
-    ).exit()
+    check50.run("python3 fuel.py").stdin(input, prompt=True).stdout(regex(output), output, regex=True).exit()
 
 
 @check50.check(exists)
@@ -120,6 +106,13 @@ def test_no_slash():
     check50.run("python3 fuel.py").stdin(input, prompt=True).reject()
 
 
+@check50.check(exists)
+def test_negative_fraction():
+    """input of -1/4 results in reprompt"""
+    input = "-1/4"
+    check50.run("python3 fuel.py").stdin(input, prompt=True).reject()
+
+
 def regex(percent):
     """match case-insensitively with only whitespace on either side"""
-    return rf"(?i)^\s*{escape(percent)}\s*$"
+    return fr'(?i)^\s*{escape(percent)}\s*$'

@@ -3,7 +3,7 @@ import os
 
 @check50.check()
 def exists():
-    """At least one Python file (.py) exists in the directory"""
+    """At least one Python file .py exists in the directory"""
     
     # List all Python files in the current directory
     py_files = [f for f in os.listdir() if f.endswith(".py")]
